@@ -1,0 +1,12 @@
+#
+#
+#
+
+# Assumes root.pri included
+isQmkDebug():message(Feature tc_decnumber.prf)
+
+# Prepare include and library flags for decnumber library usage
+DEPENDPATH *= $$PRJ_SRC/decnumber
+INCLUDEPATH *= $$PRJ_SRC/decnumber
+LIBS += -L$$PRJ_LIB -ldecnumber
+

@@ -1,0 +1,24 @@
+#
+#
+#
+
+# Assumes root.pri included
+isQmkDebug():message(Feature ss_stkovf.prf)
+QMK_OK =
+
+contains(QMK_OS_NAME,SunOS) {
+ contains(QMK_OS_ARCH,sparc) {
+  contains(QMAKE_CXX,CC) {
+   isQmkDebug():message(Adding stack overflow support)
+   # Add stack overflow for debug release only
+   QMAKE_CFLAGS   += -xcheck=stkovf
+   QMAKE_CXXFLAGS += -xcheck=stkovf
+   QMK_OK = 1
+  }
+ }
+}
+
+isEmpty(QMK_OK) {
+ warning(-xcheck=stkovf is only valid sor SunOS-sparc architecture)
+}
+

@@ -1,0 +1,71 @@
+#
+#
+#
+
+# Assumes root.pri included
+isQmkDebug():message(Feature os_linux.prf)
+
+
+#
+# Rules to be created in output Makefile
+#
+
+# Rule for cleaning depandancy files
+depclean.target = depclean
+depclean.commands = rm -f obj/*.d
+
+# Rule for cleaning object files
+objclean.target = objclean
+objclean.commands = rm -f obj/*.o
+
+# Rule for cleaning intermediate component files
+cmpclean.target = cmpclean
+cmpclean.commands = rm -f obj/* moc/* *.log
+cmpclean.depends = clean
+cmpclean.CONFIG = recursive
+cmpclean.recurse = $$SUBDIRS
+cmpclean.recurse_target = cmpclean
+
+
+# Rule for cleaning component files similar to distclean
+dstclean.target = dstclean
+dstclean.commands = rm -fr obj moc ui GNUmakefile
+dstclean.depends = distclean
+dstclean.CONFIG = recursive
+dstclean.recurse = $$SUBDIRS
+dstclean.recurse_target = dstclean
+
+# Declare new targets to qmake
+QMAKE_EXTRA_TARGETS += depclean objclean cmpclean dstclean #updgmake
+
+
+# Warnings are enabled on all compilers
+# Note: warn_off must be removed to be able to use warn_on
+CONFIG -= warn_off
+CONFIG += warn_on
+
+# Support for pre-compiled headers is disabled on all compilers
+CONFIG -= precompiled_header
+
+# Gnu C/C++ compilers
+contains(QMK_COMP,Gcc) {
+
+  # Are we in debug mode?
+  debug {
+    # Disable harmless warnings
+    #QMAKE_CXXFLAGS_WARN_ON += 
+  }
+
+  # Are we in release mode?
+  release {
+    # Disable precompiled headers
+    CONFIG -= precompiled_header
+    # Enable inline stament in TC code base
+    DEFINES += TC_USE_INLINE
+    # Remove/add more relevant optimization flags
+    #QMAKE_CFLAGS   += -O
+    #QMAKE_CXXFLAGS += -O2
+  }
+
+}
+

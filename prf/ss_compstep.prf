@@ -1,0 +1,11 @@
+#
+#
+#
+
+# Assumes root.pri included
+isQmkDebug():message(Feature ss_compstep.prf)
+
+QMK_BS = "\\"
+QMAKE_CFLAGS   += -$${QMK_BS}$${LITERAL_HASH}
+QMAKE_CXXFLAGS += -v
+

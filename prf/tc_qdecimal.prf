@@ -1,0 +1,12 @@
+#
+#
+#
+
+# Assumes root.pri included
+isQmkDebug():message(Feature tc_qdecimal.prf)
+
+# Prepare include and library flags for TC qdecimal library usage
+DEPENDPATH *= $$PRJ_SRC/qdecimal
+INCLUDEPATH *= $$PRJ_SRC/qdecimal
+LIBS += -L$$PRJ_LIB -lqdecimal
+

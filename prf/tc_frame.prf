@@ -1,0 +1,12 @@
+#
+#
+#
+
+# Assumes root.pri included
+isQmkDebug():message(Feature tc_frame.prf)
+
+# Prepare include and library flags for TC frame library usage
+DEPENDPATH *= $$PRJ_SRC/frame
+INCLUDEPATH *= $$PRJ_SRC/frame
+LIBS += -L$$PRJ_LIB -lframe
+

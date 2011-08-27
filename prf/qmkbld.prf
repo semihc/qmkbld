@@ -1,0 +1,7 @@
+
+# Uncomment for debugging
+#message(Feature qmkbld.prf)
+
+!include($$(QMKBLD)/root.pri) {
+	error(QMKBLD[$(QMKBLD)] does not point to qmkbld root)
+}

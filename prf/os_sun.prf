@@ -1,0 +1,122 @@
+#
+#
+#
+
+# Assumes root.pri included
+isQmkDebug():message(Feature os_sun.prf)
+
+
+#
+# Rules to be created in output Makefile
+#
+
+# Rule for cleaning depandancy files
+depclean.target = depclean
+depclean.commands = rm -f obj/*.d
+
+# Rule for cleaning object files
+objclean.target = objclean
+objclean.commands = rm -f obj/*.o
+
+# Rule for cleaning intermediate component files
+cmpclean.target = cmpclean
+cmpclean.commands = rm -f obj/* moc/* *.log
+cmpclean.depends = clean
+cmpclean.CONFIG = recursive
+cmpclean.recurse = $$SUBDIRS
+cmpclean.recurse_target = cmpclean
+
+
+# Rule for cleaning component files similar to distclean
+dstclean.target = dstclean
+dstclean.commands = rm -fr obj moc ui GNUmakefile
+dstclean.depends = distclean
+dstclean.CONFIG = recursive
+dstclean.recurse = $$SUBDIRS
+dstclean.recurse_target = dstclean
+
+# Rule to create GNUmakefile out of Makefile
+# Disabled due to an infinite loop
+#updgmake.target = GNUmakefile
+#updgmake.commands = sed -f ${PRJ_ROOT}/qmkprj/inc_gmsl.sed \
+#                        -f ${PRJ_ROOT}/qmkprj/inc_deps.sed \
+#                        Makefile > GNUmakefile || rm -f GNUmakefile
+#updgmake.depends = Makefile
+#updgmake.CONFIG = recursive
+#updgmake.recurse = $$SUBDIRS
+#updgmake.recurse_target = GNUmakefile
+
+# Declare new targets to qmake
+QMAKE_EXTRA_TARGETS += depclean objclean cmpclean dstclean #updgmake
+
+
+# Warnings are enabled on all compilers
+# Note: warn_off must be removed to be able to use warn_on
+CONFIG -= warn_off
+CONFIG += warn_on
+
+# Support for pre-compiled headers is disabled on all compilers
+CONFIG -= precompiled_header
+
+# Sun Studio C/C++ compilers
+contains(QMK_COMP,Sunpro) {
+
+  # Remove irrelevant defaults
+  # May need to modify libQtCore.prl
+  QMAKE_INCDIR -= /usr/sfw/include
+  QMAKE_LIBDIR -= /usr/sfw/lib
+  # We don't want KPIC used unconditionally
+  QMAKE_CFLAGS -= -KPIC
+  QMAKE_CXXFLAGS -= -KPIC
+
+  # Default shared library flag
+  QMK_SHLIB_FLAG = -KPIC
+  # On sparc change it to -xcode
+  contains(QMK_OS_ARCH,sparc): QMK_SHLIB_FLAG = -xcode=pic32
+
+  # Add Sunpro C compiler defaults
+  QMAKE_CFLAGS_WARN_ON = +w -errtags
+  QMAKE_CFLAGS_WARN_OFF = -w
+  QMAKE_CFLAGS_SHLIB = $$QMK_SHLIB_FLAG
+  QMAKE_CFLAGS_STATIC_LIB =
+  QMAKE_CFLAGS += -xannotate=no
+  # -xMMD doesn't work well for C compiler
+
+  # Add Sunpro C++ compiler defaults
+  QMAKE_CXXFLAGS_WARN_ON = +w -errtags
+  QMAKE_CXXFLAGS_WARN_OFF = -w
+  QMAKE_CXXFLAGS_SHLIB = $$QMK_SHLIB_FLAG
+  QMAKE_CXXFLAGS_STATIC_LIB =
+  QMAKE_CXXFLAGS += -xMMD -xannotate=no -features=extensions  
+
+  # Add Sunpro compiler/linker defaults
+  QMAKE_LFLAGS += -xannotate=no
+
+  # Are we in debug mode?
+  debug {
+    # Disable harmless warnings
+    QMAKE_CXXFLAGS_WARN_ON += -erroff=hidef,wvarhidenmem
+  }
+
+  # Are we in release mode?
+  release {
+    # Disable precompiled headers
+    CONFIG -= precompiled_header
+    # Enable inline stament in TC code base
+    DEFINES += TC_USE_INLINE
+    # Remove/add more relevant optimization flags
+    QMAKE_CFLAGS   -= -O
+    QMAKE_CFLAGS   += -g -xO3
+    QMAKE_CXXFLAGS -= -O2
+    QMAKE_CXXFLAGS += -g0 -xO3
+  }
+
+  # QMake doesn't how to enable pre-compiled header support
+  precompiled_header {
+    QMAKE_CFLAGS   += -xpch=auto
+    QMAKE_CXXFLAGS += -xpch=auto
+  }
+
+
+}
+

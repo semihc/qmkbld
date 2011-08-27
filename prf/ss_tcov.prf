@@ -1,0 +1,21 @@
+#
+#
+#
+
+# Assumes root.pri included
+isQmkDebug():message(Feature ss_tcov.prf)
+QMK_OK =
+
+contains(QMK_OS_NAME,SunOS) {
+ contains(QMAKE_CXX,CC) {
+   isQmkDebug():message(Adding coverage support)
+   QMAKE_CFLAGS   += -xprofile=tcov
+   QMAKE_CXXFLAGS += -xprofile=tcov
+   QMAKE_LFLAGS   += -xprofile=tcov
+   QMK_OK = 1
+ }
+}
+
+isEmpty(QMK_OK) {
+ warning(-xprofile=tcov is only valid for SunOS-CC)
+}

@@ -1,0 +1,12 @@
+#
+#
+#
+
+# Assumes root.pri included
+isQmkDebug():message(Feature tc_base.prf)
+
+# Prepare include and library flags for TC base library usage
+DEPENDPATH *= $$PRJ_SRC/base
+INCLUDEPATH *= $$PRJ_SRC/base
+LIBS += -L$$PRJ_LIB -lbase
+

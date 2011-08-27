@@ -1,0 +1,22 @@
+#
+#
+#
+
+# Assumes root.pri included
+isQmkDebug():message(Feature ss_tha.prf)
+QMK_OK =
+
+contains(QMK_OS_NAME,SunOS) {
+ contains(QMAKE_CXX,CC) {
+   isQmkDebug():message(Adding Thread Analyzer support)
+   QMAKE_CFLAGS   += -xinstrument=datarace
+   QMAKE_CXXFLAGS += -xinstrument=datarace
+   QMK_OK = 1
+ }
+}
+
+isEmpty(QMK_OK) {
+ warning(Thread Analyzer support is only valid for SunOS-CC)
+}
+
+
