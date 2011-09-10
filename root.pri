@@ -24,12 +24,24 @@ isEmpty(PRJ_ROOT) {
   # Fetch project root directory from environment variable
   PRJ_ROOT = $$(PRJ_ROOT)
 }
+# Try to infer where would PRJ_ROOT could point
+isEmpty(PRJ_ROOT) {
+  isQmkDebug(): message(PRJ_ROOT is not set)
+  exists( $${PWD}/prjcfg.pri ): PRJ_ROOT=$${PWD}
+	exists( $$(PWD)/prjcfg.pri ): PRJ_ROOT=$$(PWD)
+  !isEmpty(PRJ_ROOT) {
+    isQmkDebug(): message(Setting PRJ_ROOT to $$PRJ_ROOT)
+    unix:  system(export PRJ_ROOT=$$(PRJ_ROOT))
+    macx:  system(export PRJ_ROOT=$$(PRJ_ROOT))
+    win32: system(set PRJ_ROOT=$$(PRJ_ROOT))
+  }
+}
+# Feedback error to user if PRJ_ROOT couldn't be found
 isEmpty(PRJ_ROOT) {
   error(PRJ_ROOT must be set to project root directory)
 }
 
-
-isQmkDebug():message(root.pri included)
+isQmkDebug(): message(root.pri included)
 
 
 # Determine our environment
