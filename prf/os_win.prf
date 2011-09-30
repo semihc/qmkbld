@@ -35,9 +35,4 @@ contains(QMK_COMP,VCpp) {
    QMAKE_CXXFLAGS += /RTC1
  }
 
- # Are we in release mode?
- release {
-   DEFINES += TC_USE_INLINE
- }
-
 }

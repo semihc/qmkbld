@@ -102,8 +102,6 @@ contains(QMK_COMP,Sunpro) {
   release {
     # Disable precompiled headers
     CONFIG -= precompiled_header
-    # Enable inline stament in TC code base
-    DEFINES += TC_USE_INLINE
     # Remove/add more relevant optimization flags
     QMAKE_CFLAGS   -= -O
     QMAKE_CFLAGS   += -g -xO3
