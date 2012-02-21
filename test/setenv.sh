@@ -9,5 +9,8 @@ QMAKEFEATURES=$QMKBLD/prf
 export QMKBLD QMK_DEBUG QMAKEFEATURES
 
 # The project that uses QmkBld 
-export PRJ_ROOT=$HOME/qmkbld/test
+export PRJ_ROOT=$QMKBLD/test
+
+# Give feedback about project root
+echo "PRJ_ROOT=$PRJ_ROOT"
 
