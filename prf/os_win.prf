@@ -28,9 +28,11 @@ contains(QMK_COMP,VCpp) {
  
  # Are we in debug mode?
  debug {
-   # Use iterator debugging
-   DEFINES *= _SECURE_SCL=1
-   DEFINES *= _SECURE_SCL_THROWS=1
+   # Use iterator debugging 
+   #DEFINES *= _SECURE_SCL=1
+   #DEFINES *= _SECURE_SCL_THROWS=1
+   # Update: msvc2010 onwards they are deprecated.   
+
    # Use Run-time checks for stack corruption and uninitialized var use
    QMAKE_CXXFLAGS += /RTC1
  }

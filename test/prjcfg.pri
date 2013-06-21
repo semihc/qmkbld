@@ -8,8 +8,8 @@ QMKBLD_PRJCFG_INCLUDED = 1
 #
 # Main project build modes
 #
-PRJ_CONFIG = debug
-#PRJ_CONFIG = release
+#PRJ_CONFIG += debug
+PRJ_CONFIG += release
 
 
 # Project wide coverage support
@@ -53,7 +53,11 @@ isQmkDebug() {
 }
 
 # Now transfer project configuration tokens into CONFIG
-CONFIG *= $$PRJ_CONFIG
+CONFIG += $$PRJ_CONFIG
+
+isQmkDebug() {
+	message(CONFIG = $$CONFIG)
+}
 
 
 
