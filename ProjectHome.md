@@ -1,0 +1,1 @@
+QmkBld is Qt framework's qmake based dependency maintenance  tool to build C/C++ based projects. Wherever it's supported, QmkBld uses Gnu Make and GMSL (Gnu Make Standard Library).
